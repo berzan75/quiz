@@ -1,6 +1,6 @@
 import pgzrun
 
-WIDTH= 870
+WIDTH= 840
 HEIGHT= 600
 TITLE="quiz"
 
@@ -33,11 +33,53 @@ def draw():
     for answerbox in answerboxes:
         screen.draw.filled_rect(answerbox,"yellow")
 
+    marquee_message="Welcome to the game of the day.You are at"+f"Q:{question_index}of{question_count}"
 
+    screen.draw.textbox(
+        marquee_message,
+        marquee_box,
+        color="black"       
+     )
 
+    screen.draw.textbox(
+        "skip",
+        skip_box,
+        angle=-90,
+        color="black"
+        )
+    screen.draw.textbox(
+        str(time_left),timer_box,
+        timer_box,
+        color="black",
+        shadow=(0.5, 0.5),
+        scolor="grey"
+    )
+    screen.draw.textbox(
+        question[0].strip(),
+        question_box,
+        color="black",
+    )
+    index=1
+    for i in answerboxes:
+        screen.draw.textbox(question[index].strip(),
+        i,
+        color="black"
+                            )
+def move_marquee():
+    marquee_box.x=marquee_box.x=marquee_box+1
+    if marquee_box.left>WIDTH:
+        marquee_box.right=0
+def read_question_file():
+    global question_count,questions
+    q_file=open(question_file_name,"r")
+    for question in q_file: 
+        questions.append(question)
+        question_count=question_count+1
+    q_file.close()
 
 
 
 
 pgzrun.go()
+
 
