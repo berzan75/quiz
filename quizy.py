@@ -1,7 +1,7 @@
 import pgzrun
 
 WIDTH= 840
-HEIGHT= 600
+HEIGHT= 610
 TITLE="quiz"
 
 marquee_box=Rect(0,10,880,80)
@@ -30,6 +30,7 @@ def draw():
     screen.draw.filled_rect(marquee_box,"yellow")
     screen.draw.filled_rect(skip_box,"green")
     screen.draw.filled_rect(timer_box,"red")
+    screen.draw.filled_rect(question_box,"cyan")
     for answerbox in answerboxes:
         screen.draw.filled_rect(answerbox,"yellow")
 
@@ -49,7 +50,6 @@ def draw():
         )
     screen.draw.textbox(
         str(time_left),timer_box,
-        timer_box,
         color="black",
         shadow=(0.5, 0.5),
         scolor="grey"
@@ -63,8 +63,9 @@ def draw():
     for i in answerboxes:
         screen.draw.textbox(question[index].strip(),
         i,
-        color="black"
-                            )
+        color="black")
+        index= index +1
+        
 def move_marquee():
     marquee_box.x=marquee_box.x+1
     if marquee_box.left>WIDTH:
@@ -86,7 +87,7 @@ def on_mouse_down(pos):
     index=1
     for i in answerboxes:
         if i.collidepoint(pos):
-            if index is int(question[5]):
+            if index ==int(question[5]):
                 correct_answer()
             else:
                 game_over()
@@ -122,14 +123,16 @@ def update_time_left():
     if time_left:
         time_left=time_left-1
     else:
-        game_over
+        game_over()
 read_question_file()
 question=read_next_question()
 clock.schedule_interval(update_time_left,1)
 
-
+def update():
+    move_marquee()
 
 
 
 pgzrun.go()
+
 
